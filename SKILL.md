@@ -75,7 +75,6 @@ metadata:
 - 产品导航：见 [references/06-product-navigation/dsp-navigation.md](references/06-product-navigation/dsp-navigation.md)（何时读取：需求属于DSP数据安全平台，需要判断数据资产、访问可视、风险监测、调查审计或配置管理菜单归属时）
 - 产品导航：见 [references/06-product-navigation/sase-navigation.md](references/06-product-navigation/sase-navigation.md)（何时读取：需求属于SASE云安全访问服务，需要判断零信任、数据防泄密、互联网安全访问、终端或对象管理菜单归属时）
 - 产品导航：见 [references/06-product-navigation/xdr-navigation.md](references/06-product-navigation/xdr-navigation.md)（何时读取：需求属于XDR，需要判断安全监控、威胁分析、威胁响应、风险管理、资产中心或配置管理菜单归属时）
-- 示例：见 [references/05-examples/demo-design-examples.md](references/05-examples/demo-design-examples.md)（何时读取：需要查看通用设计规则如何被组织到设计说明中时；仅作设计规范应用示例，不作为本Skill的执行流程）
 
 ## 注意事项
 
