@@ -56,6 +56,7 @@ metadata:
 
 - 主题设计库：见 [references/01-theme-patterns/strategy-management.md](references/01-theme-patterns/strategy-management.md)（何时读取：需求涉及策略、规则、白名单、规则组、策略优先级或策略生命周期时）
 - 主题设计库：见 [references/01-theme-patterns/task-management.md](references/01-theme-patterns/task-management.md)（何时读取：需求涉及任务管理、升级任务、分发任务、扫描任务、周期执行、定时执行、执行进度或失败重试时）
+- 主题设计库：见 [references/01-theme-patterns/live-preview-config.md](references/01-theme-patterns/live-preview-config.md)（何时读取：需求涉及实时预览配置、效果预览、全屏预览、水印配置、重定向页面配置或自定义提示页配置时）
 - 功能点设计库：见 [references/02-theme-function-patterns/tag-management.md](references/02-theme-function-patterns/tag-management.md)（何时读取：需求涉及标签配置、标签筛选、标签创建、标签管理或标签与对象关联时）
 - 功能点设计库：见 [references/02-theme-function-patterns/import.md](references/02-theme-function-patterns/import.md)（何时读取：需求涉及批量导入、模板下载、文件解析、导入校验或失败明细时）
 - 功能点设计库：见 [references/02-theme-function-patterns/export.md](references/02-theme-function-patterns/export.md)（何时读取：需求涉及批量导出、导出范围、导出字段、文件生成或文件下载时）
