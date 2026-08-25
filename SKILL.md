@@ -30,7 +30,7 @@ metadata:
 ### 推荐读取顺序
 
 1. 需求命中策略、任务等完整业务主题时，先读取 `references/01-theme-patterns/` 下对应主题文档。
-2. 页面包含导入、导出、标签、优先级、执行周期等局部能力时，读取 `references/02-theme-function-patterns/` 下对应功能点文档。
+2. 页面包含导入、导出、标签、优先级、执行周期、批量编辑等局部能力时，读取 `references/02-theme-function-patterns/` 下对应功能点文档。
 3. 需要判断页面类型、导航层级、表格、表单、交互、状态或术语时，读取 `references/03-design-template/` 下对应基础设计文档。
 4. 需要把设计语义落到 idux 组件时，读取 `references/04-components/idux-component-map.md`。
 5. 缺少业务设计 Skill 或业务设计 Skill 未覆盖产品菜单结构时，读取 `references/05-product-navigation/navigation-index.md` 并按产品线进入对应导航文档。
@@ -62,6 +62,7 @@ metadata:
 - 功能点设计库：见 [references/02-theme-function-patterns/export.md](references/02-theme-function-patterns/export.md)（何时读取：需求涉及批量导出、导出范围、导出字段、文件生成或文件下载时）
 - 功能点设计库：见 [references/02-theme-function-patterns/execution-cycle.md](references/02-theme-function-patterns/execution-cycle.md)（何时读取：需求涉及执行周期、定时任务周期、每天每周每月联动选择或周期表单配置时）
 - 功能点设计库：见 [references/02-theme-function-patterns/priority-configuration.md](references/02-theme-function-patterns/priority-configuration.md)（何时读取：需求涉及优先级、策略位置、规则位置、移动到某条数据之前或之后时）
+- 功能点设计库：见 [references/02-theme-function-patterns/batch-edit.md](references/02-theme-function-patterns/batch-edit.md)（何时读取：需求涉及批量编辑、批量修改、勾选数据后统一赋值或批量更新字段时）
 - 基础设计库：见 [references/03-design-template/01-page-types.md](references/03-design-template/01-page-types.md)（何时读取：判断页面类型、页面骨架、标题栏、内容区结构、底部操作和线框图结构时）
 - 基础设计库：见 [references/03-design-template/02-navigation-and-hierarchy.md](references/03-design-template/02-navigation-and-hierarchy.md)（何时读取：设计菜单归属、页面拆解、详情页、Tab、页面层级和内容组织时）
 - 基础设计库：见 [references/03-design-template/03-table-patterns.md](references/03-design-template/03-table-patterns.md)（何时读取：设计表格、工具栏、搜索筛选、字段展示、分页排序、批量操作和行内操作时）
