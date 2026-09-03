@@ -142,7 +142,7 @@
 
 #### 组件信息
 - 页面容器：使用 `IxProFormModal`。
-- 表单字段：策略名称使用 `IxInput`，描述使用 `IxInput`，优先级使用 `IxInputNumber`，状态使用 `IxRadio` / `IxRadioGroup`，执行动作默认使用 `IxRadio` / `IxRadioGroup`，规则配置使用 `IxProFormList`，生效时间默认使用 `IxSelect` 并展示“全天”，生效范围使用 `IxSelect`。
+- 表单字段：策略名称使用 `IxInput`，描述使用 `IxInput`，优先级使用 `IxInputNumber`，状态使用 `IxRadioGroup`（单选组，启用/禁用两个选项同时展示），执行动作默认使用 `IxRadio` / `IxRadioGroup`，规则配置使用 `IxProFormList`，生效时间默认使用 `IxSelect` 并展示“全天”，生效范围使用 `IxSelect`。
 - 底部操作：取消、确定按钮使用 `IxButton`，按弹窗表单页的底部操作区规则对齐。
 
 #### 表单区
@@ -151,7 +151,7 @@
 | 策略名称 | 输入框 | `IxInput` | 必填；用于唯一标识策略，需校验重名。 |
 | 描述 | 输入框 | `IxInput` | 非必填；说明策略用途、适用对象或业务背景。 |
 | 优先级 | 数字/位置选择 |  | 必填；用于决定多个策略同时匹配时的执行顺序；组件由 [优先级配置主题设计模板](../02-feature/priority-configuration.md) 决定。 |
-| 状态 | 开关/单选 | `IxRadio` / `IxRadioGroup` | 启用或禁用；新增时可默认禁用，避免未配置完成即生效。 |
+| 状态 | 单选组 | `IxRadioGroup` | 必填；使用 `IxRadioGroup` 单选组，组内同时展示“启用”“禁用”两个选项供直接切换；新增时默认选中“启用”。 |
 | 业务实际的规则配置 | 条件配置器/表单组/业务组件 | `IxProFormList` | 根据具体业务定义规则字段，用于配置匹配对象、匹配条件、规则参数或条件组合。若不是动态重复结构，需按具体字段选择已映射组件。 |
 | 执行动作 | 单选 | `IxRadio` / `IxRadioGroup` | 必填；定义匹配后做什么，例如允许、阻断、告警、隔离、审批、通知、打标等。 |
 | 生效时间 | 选择框 | `IxSelect` | 必填；默认展示“全天”，也可选择工作日、指定时间段等策略有效周期。 |
