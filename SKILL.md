@@ -34,11 +34,13 @@ metadata:
    - 策略管理：需求为访问控制、防火墙、审计管控等完整策略体系，包含优先级、默认策略、执行动作时，读 `references/01-theme/strategy-management.md`。
    - 任务管理：需求涉及任务管理、周期执行、失败重试、执行进度时，读 `references/01-theme/task-management.md`。
    - 实时预览配置：需求涉及效果预览、全屏预览、水印、自定义提示页等配置时，读 `references/01-theme/live-preview-config.md`。
-   - 未命中任何主题 → 进入第 2 步，按基础设计拆解页面。
-2. 基础设计拆解（未命中主题时）：按"页面类型 → 结构规则 → 局部能力"的顺序把需求拆成页面功能设计：
+   - 无论是否命中主题，都进入第 2 步做基础设计拆解：命中主题时用于补齐页面骨架、控件形态与交互细节，未命中主题时作为主路径。
+2. 基础设计拆解（始终执行）：按"页面类型 → 结构规则 → 局部能力"的顺序把需求拆成页面功能设计：
    - 页面类型与骨架：先读 `references/03-patterns/01-navigation-and-hierarchy.md` 走页面类型选择决策链确定页面类型，再读 `references/02-template/01-page-types.md` 匹配具体模板和线框。
-   - 页面结构规则：按需读取 `references/03-patterns/` 下表格、表单、交互、状态、文案对应文档。
+   - 页面结构规则：按需读取 `references/03-patterns/` 下的表格（02-table-patterns.md）、表单（03-form-patterns.md）、交互（04-interaction-patterns.md）、状态（05-state-patterns.md）、文案（06-copywriting-terminology.md）对应文档。
+   - 控件级细节：确定使用下拉选择等具体控件时，读取 `references/03-patterns/07-widget-patterns/` 下对应控件文档（当前含 select-panel.md，用于确定下拉面板形态与增强项）。
    - 局部能力：页面包含导入、导出、标签、优先级、执行周期、批量编辑等能力时，读取 `references/04-feature/` 下对应功能点文档。
+   - 本步始终执行：命中主题时同样执行本步；主题文档只覆盖业务特有的页面形态与操作，页面骨架、控件形态、交互与状态细节以本节文档为准。
 3. 组件映射：需要把设计语义落到 idux 组件时，读取 `references/05-components/idux-component-map.md`。
 4. 产品导航（可选）：缺少product design skill 或product design skill 未覆盖产品菜单结构时，读取 `references/06-product-navigation/navigation-index.md` 并按产品线进入对应导航文档。
 
@@ -72,6 +74,7 @@ metadata:
 - 基础设计库：见 [references/03-patterns/04-interaction-patterns.md](references/03-patterns/04-interaction-patterns.md)（何时读取：设计二次确认、高危操作、反馈方式、弹窗抽屉边界和操作风险控制时）
 - 基础设计库：见 [references/03-patterns/05-state-patterns.md](references/03-patterns/05-state-patterns.md)（何时读取：补充空状态、加载态、异常态、无权限、搜索无结果和极端情况时）
 - 基础设计库：见 [references/03-patterns/06-copywriting-terminology.md](references/03-patterns/06-copywriting-terminology.md)（何时读取：生成或校准产品界面文案、按钮文案、术语命名、提示语和状态说明时）
+- 控件级交互规范：见 [references/03-patterns/07-widget-patterns/](references/03-patterns/07-widget-patterns/)（何时读取：设计具体控件的交互细节时先在此定位控件文件；当前含 select-panel.md（确定下拉选择面板的形态（平铺、平铺+搜索、分组+搜索、树+搜索、级联）与增强项（面板内新增、面板确定取消、选项辅助说明、选项禁用原因）），tag.md（确定标签形态（可变更、点状、icon、深色、浅色、浅灰、标签组）与各场景取值））
 - 功能点设计库：见 [references/04-feature/tag-management.md](references/04-feature/tag-management.md)（何时读取：需求涉及标签配置、标签筛选、标签创建、标签管理或标签与对象关联时）
 - 功能点设计库：见 [references/04-feature/import.md](references/04-feature/import.md)（何时读取：需求涉及批量导入、模板下载、文件解析、导入校验或失败明细时）
 - 功能点设计库：见 [references/04-feature/export.md](references/04-feature/export.md)（何时读取：需求涉及批量导出、导出范围、导出字段、文件生成或文件下载时）
@@ -89,6 +92,7 @@ metadata:
 ## 注意事项
 
 - 本 Skill 只提供规范知识，不直接产出页面方案、HTML文件或代码。
+- 知识分层约定：场景文档（02-template、03-patterns 各主题、01-theme、04-feature）承载「该场景下的结论」；`03-patterns/07-widget-patterns/` 承载「控件形态与选择决策」；`05-components/idux-component-map.md` 承载「组件能力与禁忌」。同一规则的决策逻辑只写一处，其他位置保留结论并链接过去，不在两处重复描述同一决策。
 - 使用时应按需读取参考文件，优先读取最小相关范围。
 - 主题设计提供框架参考，不代表字段、操作和页面层级必须照搬；实际设计仍需结合业务需求和product design skill 调整。
 - 功能点设计用于补齐局部能力，放入页面方案时应简要说明设计要点，并在后续设计或编码指导中标明关联依据。
