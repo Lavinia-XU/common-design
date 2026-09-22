@@ -14,8 +14,8 @@ metadata:
 ## 任务目标
 
 - 本 Skill 用于：为 `prd-design-code` 或其他设计类 Skill 提供安全产品通用设计规范知识源。
-- 能力包含：主题类设计模式、功能点设计模式、基础页面结构、表格与表单规则、交互与状态规范、产品文案术语、idux组件映射和产品导航参考。
-- 触发条件：当设计方案需要补齐页面结构、导航归属、页面层级、功能点交互、状态边界、文案术语或组件选型时读取本 Skill。
+- 能力包含：主题类设计模式、功能点设计模式、基础页面结构、表格与表单规则、交互与状态规范、产品文案术语和idux组件映射。
+- 触发条件：当设计方案需要补齐页面结构、页面层级、功能点交互、状态边界、文案术语或组件选型时读取本 Skill。
 - 边界说明：本 Skill 不独立执行 PRD 拆解，不负责生成页面，不负责生成HTML说明书，不负责输出Coding计划，也不直接执行Coding。
 
 ## 使用方式
@@ -37,12 +37,11 @@ metadata:
    - 无论是否命中主题，都进入第 2 步做基础设计拆解：命中主题时用于补齐页面骨架、控件形态与交互细节，未命中主题时作为主路径。
 2. 基础设计拆解（始终执行）：按"页面类型 → 结构规则 → 局部能力"的顺序把需求拆成页面功能设计：
    - 页面类型与骨架：先读 `references/03-patterns/01-navigation-and-hierarchy.md` 走页面类型选择决策链确定页面类型，再读 `references/02-template/01-page-types.md` 匹配具体模板和线框。
-   - 页面结构规则：按需读取 `references/03-patterns/` 下的表格（02-table-patterns.md）、表单（03-form-patterns.md）、交互（04-interaction-patterns.md）、状态（05-state-patterns.md）、文案（06-copywriting-terminology.md）对应文档。
-   - 控件级细节：确定使用下拉选择等具体控件时，读取 `references/03-patterns/07-widget-patterns/` 下对应控件文档（当前含 select-panel.md，用于确定下拉面板形态与增强项）。
+   - 页面结构规则：设计解法（表格、表单、详情信息展示）与交互、状态、文案规范位于 `references/03-patterns/` 下，先读 `references/03-patterns/index.md` 按场景路由定位文档，再只读命中的文档。
+   - 控件级细节：确定使用下拉选择、标签等具体控件时，读取 `references/03-patterns/03-widget-patterns/` 下对应控件文档；可用控件清单见 `references/03-patterns/index.md`。
    - 局部能力：页面包含导入、导出、标签、优先级、执行周期、批量编辑等能力时，读取 `references/04-feature/` 下对应功能点文档。
    - 本步始终执行：命中主题时同样执行本步；主题文档只覆盖业务特有的页面形态与操作，页面骨架、控件形态、交互与状态细节以本节文档为准。
 3. 组件映射：需要把设计语义落到 idux 组件时，读取 `references/05-components/idux-component-map.md`。
-4. 产品导航（可选）：缺少product design skill 或product design skill 未覆盖产品菜单结构时，读取 `references/06-product-navigation/navigation-index.md` 并按产品线进入对应导航文档。
 
 ## 使用示例
 
@@ -56,25 +55,14 @@ metadata:
   - 读取资源：读取 `references/04-feature/tag-management.md`。
   - 预期用途：明确标签配置、标签创建、标签管理入口、标签同步关系和实现检查点。
 
-- 示例3：
-  - 场景/输入：需求属于DSP产品，但未提供product design skill，需要判断页面应放在哪个菜单下。
-  - 读取资源：先读 `references/06-product-navigation/navigation-index.md`，再读 `references/06-product-navigation/dsp-navigation.md`。
-  - 预期用途：辅助判断导航归属、菜单命名规律、Tab页面关系和是否存在重名冲突。
-
 ## 资源索引
 
 - 主题设计库：见 [references/01-theme/strategy-management.md](references/01-theme/strategy-management.md)（何时读取：需求涉及策略、策略组、策略优先级、策略生命周期，或需要按条件加动作加优先级方式管理完整策略时）
 - 主题设计库：见 [references/01-theme/rule-configuration.md](references/01-theme/rule-configuration.md)（何时读取：需求涉及规则配置、规则组、告警规则、白名单规则、规则条件配置或规则列表批量维护时）
 - 主题设计库：见 [references/01-theme/task-management.md](references/01-theme/task-management.md)（何时读取：需求涉及任务管理、升级任务、分发任务、扫描任务、周期执行、定时执行、执行进度或失败重试时）
 - 主题设计库：见 [references/01-theme/live-preview-config.md](references/01-theme/live-preview-config.md)（何时读取：需求涉及实时预览配置、效果预览、全屏预览、水印配置、重定向页面配置或自定义提示页配置时）
-- 基础设计库：见 [references/02-template/01-page-types.md](references/02-template/01-page-types.md)（何时读取：判断页面类型、页面骨架、标题栏、内容区结构、底部操作和线框图结构时）
-- 基础设计库：见 [references/03-patterns/01-navigation-and-hierarchy.md](references/03-patterns/01-navigation-and-hierarchy.md)（何时读取：设计菜单归属、菜单组织规则、页面拆解、页面类型选择、详情页、Tab、页面层级和内容组织时）
-- 基础设计库：见 [references/03-patterns/02-table-patterns.md](references/03-patterns/02-table-patterns.md)（何时读取：设计表格、工具栏、搜索筛选、字段展示、分页排序、批量操作和行内操作时）
-- 基础设计库：见 [references/03-patterns/03-form-patterns.md](references/03-patterns/03-form-patterns.md)（何时读取：设计表单、配置项、步骤条、字段校验、下拉选择和未保存提醒时）
-- 基础设计库：见 [references/03-patterns/04-interaction-patterns.md](references/03-patterns/04-interaction-patterns.md)（何时读取：设计二次确认、高危操作、反馈方式、弹窗抽屉边界和操作风险控制时）
-- 基础设计库：见 [references/03-patterns/05-state-patterns.md](references/03-patterns/05-state-patterns.md)（何时读取：补充空状态、加载态、异常态、无权限、搜索无结果和极端情况时）
-- 基础设计库：见 [references/03-patterns/06-copywriting-terminology.md](references/03-patterns/06-copywriting-terminology.md)（何时读取：生成或校准产品界面文案、按钮文案、术语命名、提示语和状态说明时）
-- 控件级交互规范：见 [references/03-patterns/07-widget-patterns/](references/03-patterns/07-widget-patterns/)（何时读取：设计具体控件的交互细节时先在此定位控件文件；当前含 select-panel.md（确定下拉选择面板的形态（平铺、平铺+搜索、分组+搜索、树+搜索、级联）与增强项（面板内新增、面板确定取消、选项辅助说明、选项禁用原因）），tag.md（确定标签形态（可变更、点状、icon、深色、浅色、浅灰、标签组）与各场景取值））
+- 页面模板库：见 [references/02-template/01-page-types.md](references/02-template/01-page-types.md)（何时读取：判断页面类型、页面骨架、标题栏、内容区结构、底部操作和线框图结构时）
+- 设计模式库：见 [references/03-patterns/index.md](references/03-patterns/index.md)（何时读取：设计菜单归属与页面层级、选择设计解法（列表表格、新增编辑表单、详情信息展示）、确定控件形态、补充交互/状态/文案规则时；进入 03-patterns 前先读 index 按场景路由定位具体文档，目录新增文档只登记 index，不回改本文件）
 - 功能点设计库：见 [references/04-feature/tag-management.md](references/04-feature/tag-management.md)（何时读取：需求涉及标签配置、标签筛选、标签创建、标签管理或标签与对象关联时）
 - 功能点设计库：见 [references/04-feature/import.md](references/04-feature/import.md)（何时读取：需求涉及批量导入、模板下载、文件解析、导入校验或失败明细时）
 - 功能点设计库：见 [references/04-feature/export.md](references/04-feature/export.md)（何时读取：需求涉及批量导出、导出范围、导出字段、文件生成或文件下载时）
@@ -82,18 +70,11 @@ metadata:
 - 功能点设计库：见 [references/04-feature/priority-configuration.md](references/04-feature/priority-configuration.md)（何时读取：需求涉及优先级、策略位置、规则位置、移动到某条数据之前或之后时）
 - 功能点设计库：见 [references/04-feature/batch-edit.md](references/04-feature/batch-edit.md)（何时读取：需求涉及批量编辑、批量修改、勾选数据后统一赋值或批量更新字段时）
 - 组件映射表：见 [references/05-components/idux-component-map.md](references/05-components/idux-component-map.md)（何时读取：需要把页面语义映射为idux组件、按钮、弹窗、抽屉、搜索筛选或描述列表组件时）
-- 产品导航索引：见 [references/06-product-navigation/navigation-index.md](references/06-product-navigation/navigation-index.md)（何时读取：缺少product design skill、product design skill未覆盖导航结构，或需要辅助判断产品菜单归属时）
-- 产品导航：见 [references/06-product-navigation/atrust-navigation.md](references/06-product-navigation/atrust-navigation.md)（何时读取：需求属于aTrust或涉及零信任、安全接入、互联网安全访问、数据保护等aTrust菜单归属时）
-- 产品导航：见 [references/06-product-navigation/dr-navigation.md](references/06-product-navigation/dr-navigation.md)（何时读取：需求属于DR下一代端点安全产品，需要判断安全监控、检测响应、病毒查杀、客户端、策略中心等菜单归属时）
-- 产品导航：见 [references/06-product-navigation/dsp-navigation.md](references/06-product-navigation/dsp-navigation.md)（何时读取：需求属于DSP数据安全平台，需要判断数据资产、访问可视、风险监测、调查审计或配置管理菜单归属时）
-- 产品导航：见 [references/06-product-navigation/sase-navigation.md](references/06-product-navigation/sase-navigation.md)（何时读取：需求属于SASE云安全访问服务，需要判断零信任、数据防泄密、互联网安全访问、终端或对象管理菜单归属时）
-- 产品导航：见 [references/06-product-navigation/xdr-navigation.md](references/06-product-navigation/xdr-navigation.md)（何时读取：需求属于XDR，需要判断安全监控、威胁分析、威胁响应、风险管理、资产中心或配置管理菜单归属时）
 
 ## 注意事项
 
 - 本 Skill 只提供规范知识，不直接产出页面方案、HTML文件或代码。
-- 知识分层约定：场景文档（02-template、03-patterns 各主题、01-theme、04-feature）承载「该场景下的结论」；`03-patterns/07-widget-patterns/` 承载「控件形态与选择决策」；`05-components/idux-component-map.md` 承载「组件能力与禁忌」。同一规则的决策逻辑只写一处，其他位置保留结论并链接过去，不在两处重复描述同一决策。
+- 知识分层约定：场景文档（02-template、03-patterns 各主题、01-theme、04-feature）承载「该场景下的结论」；`03-patterns/02-solution-patterns/` 承载「表格、表单、详情页信息展示等设计解法的通用结论」，后续新增设计解法统一放入该目录；`03-patterns/03-widget-patterns/` 承载「控件形态与选择决策」；`05-components/idux-component-map.md` 承载「组件能力与禁忌」。同一规则的决策逻辑只写一处，其他位置保留结论并链接过去，不在两处重复描述同一决策。
 - 使用时应按需读取参考文件，优先读取最小相关范围。
 - 主题设计提供框架参考，不代表字段、操作和页面层级必须照搬；实际设计仍需结合业务需求和product design skill 调整。
 - 功能点设计用于补齐局部能力，放入页面方案时应简要说明设计要点，并在后续设计或编码指导中标明关联依据。
-- 产品导航仅作为菜单归属、命名规律和页面层级判断依据，不替代具体产品设计规范。
