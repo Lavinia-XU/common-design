@@ -87,4 +87,4 @@
 - 入口按钮位置、未勾选禁用、勾选数量限制等规则复用 `../03-patterns/02-solution-patterns/table-patterns.md` 表格头部操作区规范。
 - 批量操作结果反馈（成功、部分失败、全部失败）复用 `../03-patterns/02-solution-patterns/table-patterns.md` 批量操作反馈规则。
 - 字段控件映射复用 `../03-patterns/02-solution-patterns/form-patterns.md` 常见字段组件映射速查。
-- 弹窗关闭、未保存离开确认等交互复用 `../03-patterns/04-interaction-patterns.md` 交互反馈与风险控制规则。
+- 弹窗关闭等交互复用 `../03-patterns/04-interaction-patterns.md` 交互反馈与风险控制规则。

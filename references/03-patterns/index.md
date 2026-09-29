@@ -25,8 +25,9 @@
 |------------------|----------|
 | 页面放哪个菜单、要不要独立页面、页面拆几个、详情页与 Tab 怎么分 | [01-navigation-and-hierarchy.md](01-navigation-and-hierarchy.md) |
 | 列表页主体是表格：工具栏、搜索筛选、字段展示、分页排序、批量与行内操作 | [02-solution-patterns/table-patterns.md](02-solution-patterns/table-patterns.md) |
-| 新增编辑配置：表单布局、字段校验、步骤条、未保存提醒 | [02-solution-patterns/form-patterns.md](02-solution-patterns/form-patterns.md) |
-| 功能配置选型：配置需要几个容器、用纯表单、实时预览、手动预览还是可视化编排 | [02-solution-patterns/config-patterns.md](02-solution-patterns/config-patterns.md) |
+| 列表/集合条目怎么承载：已配置条目、对接实例、用户源等多实例配置的集合用表格还是多卡片（第三方平台对接、外部存储等场景） | [02-solution-patterns/config-patterns.md](02-solution-patterns/config-patterns.md#7-双容器场景的已配置内容承载) |
+| 新增编辑配置：表单布局、配置项聚合、字段校验、步骤条；设计交付前端实现：表单状态契约、输出结构建议、自检清单 | [02-solution-patterns/form-patterns.md](02-solution-patterns/form-patterns.md) |
+| 功能配置选型：配置需要几个容器、新增编辑配置用纯表单、实时预览、手动预览还是可视化编排 | [02-solution-patterns/config-patterns.md](02-solution-patterns/config-patterns.md) |
 | 详情页或详情抽屉里每块信息用什么形式展示（描述列表、表格、卡片、时间轴、可视化、原始内容） | [02-solution-patterns/detail-info-patterns.md](02-solution-patterns/detail-info-patterns.md) |
 | 下拉选择面板形态（平铺、平铺+搜索、分组+搜索、树+搜索、级联、面板内新增等增强项） | [03-widget-patterns/select-panel.md](03-widget-patterns/select-panel.md) |
 | 标签形态（可变更、点状、icon、深色、浅色、浅灰、标签组）与各场景取值 | [03-widget-patterns/tag.md](03-widget-patterns/tag.md) |
@@ -36,9 +37,9 @@
 
 ## 典型读取组合
 
-- 列表页设计：01-navigation-and-hierarchy.md 定页面类型 → `../02-template/01-page-types.md` 拿模板线框 → table-patterns.md 补表格规则 → 04、05 补交互与状态。
-- 新增编辑设计：01-navigation-and-hierarchy.md 判断入口形态 → form-patterns.md 补表单规则 → 涉及下拉、标签等控件读 03-widget-patterns 对应文档 → 06 校准文案。
-- 功能配置设计：01-navigation-and-hierarchy.md 判断入口与容器 → config-patterns.md 定配置逻辑与配置形式 → form-patterns.md 补表单规则 → 已配置内容按表格或卡片参照对应文档。
+- 列表页设计：01-navigation-and-hierarchy.md 定页面类型 → 判断集合承载形式：多实例配置条目（对接实例、用户源等）按 config-patterns.md 第 7 节定表格或多卡片（判为多卡片用卡片列表页模板），普通对象集合直接用表格 → `../02-template/01-page-types.md` 拿模板线框 → table-patterns.md 补表格规则 → 04、05 补交互与状态。
+- 新增编辑设计：01-navigation-and-hierarchy.md 判断入口形态 → form-patterns.md 补表单规则 → 涉及下拉、标签等控件读 03-widget-patterns 对应文档 → 06 校准文案 → 要交付前端实现时，再读 form-patterns.md 第 11-13 节（状态契约、输出结构、自检清单）。
+- 功能配置设计：01-navigation-and-hierarchy.md 判断入口与容器 → config-patterns.md 定配置逻辑与配置形式 → form-patterns.md 补表单规则 → 双容器场景已配置内容按 config-patterns.md 第 7 节定表格或多卡片，再参照对应文档。
 - 详情页设计：01-navigation-and-hierarchy.md 判断要不要详情页与信息落位 → detail-info-patterns.md 定每块信息展示形式 → 05-state-patterns.md 补空态。
 - 分工边界：01-navigation-and-hierarchy.md 只做页面判断，不描述展示细节；02-solution-patterns 各文档承载解法结论；03-widget-patterns 各文档承载控件决策；横切规范全局适用。
 
