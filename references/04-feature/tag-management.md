@@ -36,7 +36,91 @@
 
 ## 3. 场景一：标签管理
 
-### 3.1 常见页面组合
+### 3.1 功能契约
+
+机器可读契约：`featurePageId` 是稳定锚点，设计说明书登记的页面 ID 必须与本契约及下文一致；`requiredAsciiTokens` 是线框结构签名（结构必须保留，业务文案允许调整）；`capabilities` 声明必须保留、条件必选、可选拓展与预留拓展点；`forbiddenStructures` 为结构化禁止项，不依赖文本表述；`constraints.tunable` 当前为空，即节点结构、容器形态、必含组件、表格字段与文案规则均不可调整。
+
+```json
+{
+  "feature": "tag-management",
+  "nodes": [
+    {
+      "featurePageId": "tag-management",
+      "containerType": "modal",
+      "order": 1,
+      "wireframeRef": "references/04-feature/tag-management.md#tag-management-wireframe",
+      "requiredAsciiTokens": ["标签管理", "[新增]", "[删除]", "标签名称", "被引用次数", "删除", "[关闭]"],
+      "requiredComponents": ["IxModal", "IxProTable", "IxPagination"]
+    },
+    {
+      "featurePageId": "tag-add",
+      "containerType": "popover",
+      "order": 2,
+      "entryFrom": "tag-management 的 [新增] 按钮",
+      "wireframeRef": "references/04-feature/tag-management.md#tag-add-wireframe",
+      "requiredAsciiTokens": ["请输入标签名称", "[取消]", "[确定]"],
+      "requiredComponents": ["IxPopconfirm", "IxInput"]
+    },
+    {
+      "featurePageId": "tag-delete-confirm",
+      "containerType": "popconfirm",
+      "order": 3,
+      "entryFrom": "tag-management 操作列 [删除]",
+      "wireframeRef": "references/04-feature/tag-management.md#tag-delete-confirm-wireframe",
+      "requiredAsciiTokens": ["确认删除该标签吗？", "[取消]", "[确定]"],
+      "requiredComponents": ["IxPopconfirm"]
+    },
+    {
+      "featurePageId": "tag-batch-delete-confirm",
+      "containerType": "popconfirm",
+      "order": 4,
+      "entryFrom": "tag-management 顶部 [删除]",
+      "wireframeRef": "references/04-feature/tag-management.md#tag-batch-delete-confirm-wireframe",
+      "requiredAsciiTokens": ["确认删除已选的X个标签吗？", "[取消]", "[确定]"],
+      "requiredComponents": ["IxPopconfirm"]
+    }
+  ],
+  "edges": [
+    { "from": "所属业务页面", "to": "tag-management", "label": "点击标签管理按钮" },
+    { "from": "tag-management", "to": "tag-add", "label": "新增" },
+    { "from": "tag-management", "to": "tag-batch-delete-confirm", "label": "删除", "when": "已勾选至少1条，否则按钮禁用" },
+    { "from": "tag-management", "to": "tag-delete-confirm", "label": "操作列删除" },
+    { "from": "tag-add", "to": "tag-management", "label": "确定", "effect": "新标签插入表格首行，被引用次数为0，同步进入标签配置候选列表" },
+    { "from": "tag-delete-confirm", "to": "tag-management", "label": "确定", "effect": "删除该条标签，表格刷新，标签配置候选列表同步移除" },
+    { "from": "tag-batch-delete-confirm", "to": "tag-management", "label": "确定", "effect": "删除全部已勾选标签，清空勾选状态，候选列表同步移除" }
+  ],
+  "capabilities": {
+    "required": ["toolbar.add", "toolbar.delete", "table.selection", "table.batchDelete", "confirm.batchDelete", "table.referenceCount"],
+    "conditional": [
+      {
+        "when": "业务明确预置标签不可删除",
+        "required": ["preset.notSelectable", "preset.disabledReason"]
+      }
+    ],
+    "optional": ["tag.rename", "tag.disable", "tag.status", "tag.source", "filter.keyword", "batch.enableDisable"],
+    "extensionPoints": ["toolbar.extraActions"]
+  },
+  "constraints": {
+    "modalWidth": 640,
+    "footerCloseOnly": true,
+    "deleteGatedBySelection": true,
+    "clearSelectionAfterBatchDelete": true,
+    "syncToTagConfig": "新增与删除均需同步标签配置候选列表与被引用次数",
+    "tunable": []
+  },
+  "forbiddenStructures": [
+    { "type": "rowOnlyDelete" },
+    { "type": "deletePresetTag" },
+    { "type": "omitReferenceCountColumn" },
+    { "type": "defaultModalAsStandalonePage" },
+    { "type": "submitButtonInFooter" }
+  ]
+}
+```
+
+`capabilities.optional` 按业务情况选取，选取后补充对应交互与字段设计；`forbiddenStructures` 中 `defaultModalAsStandalonePage` 指默认情况下标签管理以按钮触发的弹窗承载，仅当标签涉及复杂分类、权限、颜色体系、关联对象详情或审计日志等业务复杂度评估后才允许扩展为独立页面。
+
+### 3.2 常见页面组合
 
 | 页面 | 页面类型 | 用途 | 常见入口 |
 |---|---|---|---|
@@ -44,7 +128,7 @@
 | 新增标签 | 气泡窗表单 | 输入标签名称并新增到标签列表首行 | 标签管理弹窗内“新增”按钮 |
 | 删除确认 | 二次确认气泡窗 | 确认单条删除或批量删除，避免误操作 | 操作列“删除”或弹窗工具栏“删除”按钮 |
 
-### 3.2 标签管理弹窗
+### 3.3 标签管理弹窗 {#tag-management-wireframe}
 
 线框图：
 
@@ -109,11 +193,26 @@
   - 标签名称过长时单行省略并支持悬浮查看完整名称，避免撑开弹窗。
   - 删除按钮状态必须与勾选状态联动，批量删除完成后清空勾选状态。
 
-### 3.3 新增标签
+### 3.4 新增标签 {#tag-add-wireframe}
 
 - 页面类型：由“新增”按钮触发的气泡窗表单。
 - 容器形式：Popover，贴近“新增”按钮展示。
 - 气泡窗内容：标签名称输入框、底部按钮组。
+
+线框图：
+
+```text
+┌──────────────────────────────────────┐
+│  [新增] ▲                            │
+├──────────────────────────────────────┤
+│ ┌──────────────────────────────────┐ │
+│ │ 请输入标签名称                    │ │
+│ │                                  │ │
+│ │            [取消]      [确定]    │ │
+│ └──────────────────────────────────┘ │
+└──────────────────────────────────────┘
+```
+
 - 输入框：高度32px，Placeholder为“请输入标签名称”。
 - 按钮组：右对齐，包含“取消”和“确定”两个按钮，按钮间距8px。
 - 按钮样式：取消为普通按钮，确定为主按钮。
@@ -129,10 +228,25 @@
   - 标签名称前后空格应在提交时清理。
   - 如业务要求标签唯一，应在提交时校验重名并给出提示；未明确时作为待确认问题。
 
-### 3.4 单条删除
+### 3.5 单条删除 {#tag-delete-confirm-wireframe}
 
 - 页面类型：操作列触发的二次确认气泡窗。
 - 触发入口：点击表格操作列的“删除”按钮。
+
+线框图：
+
+```text
+┌──────────────────────────────────────┐
+│  [删除] ▲                            │
+├──────────────────────────────────────┤
+│ ┌──────────────────────────────────┐ │
+│ │ 确认删除该标签吗？               │ │
+│ │                                  │ │
+│ │            [取消]      [确定]    │ │
+│ └──────────────────────────────────┘ │
+└──────────────────────────────────────┘
+```
+
 - 确认文案：确认删除该标签吗？
 - 按钮组合：取消为普通按钮，确定为主按钮。
 - 确认行为：删除当前行标签，关闭确认气泡窗。
@@ -142,11 +256,26 @@
   - 删除后表格数据实时刷新；若删除后列表为空，展示空状态。
   - 删除标签后，标签配置选择框候选列表应同步移除该标签；如果该标签已被业务对象绑定，需要按业务规则确认是否解除绑定或阻止删除。
 
-### 3.5 批量删除
+### 3.6 批量删除 {#tag-batch-delete-confirm-wireframe}
 
 - 页面类型：顶部批量操作触发的二次确认气泡窗。
 - 触发条件：勾选表格中至少1条数据后，“删除”按钮变为可用。
 - 触发入口：点击激活后的顶部“删除”按钮。
+
+线框图：
+
+```text
+┌──────────────────────────────────────┐
+│  [删除] ▲                            │
+├──────────────────────────────────────┤
+│ ┌──────────────────────────────────┐ │
+│ │ 确认删除已选的X个标签吗？        │ │
+│ │                                  │ │
+│ │            [取消]      [确定]    │ │
+│ └──────────────────────────────────┘ │
+└──────────────────────────────────────┘
+```
+
 - 确认文案：确认删除已选的X个标签吗？其中X为当前已勾选标签数量。
 - 按钮组合：取消为普通按钮，确定为主按钮。
 - 确认行为：删除所有已勾选标签，清空勾选状态，关闭确认气泡窗。
@@ -156,7 +285,7 @@
   - 批量删除完成后，如果当前页无数据，应展示空状态并保持“删除”按钮禁用。
   - 批量删除后，标签配置选择框候选列表应同步移除被删除标签。
 
-### 3.6 标签管理交互流程
+### 3.7 标签管理交互流程
 
 ```text
 点击“标签管理”按钮

@@ -60,10 +60,96 @@
 - 导入异常处理弹窗（import-error-list，列表弹窗）展示校验失败的记录列表，支持在线编辑错误字段、删除记录、下载错误报告、提交修正数据；提交后重新校验，有错误留在本弹窗继续编辑，直到全部成功。
 - 该模式下部分失败与全部失败的结果弹窗（import-partial-result、import-failed）不出现，由本弹窗替代；导入成功弹窗（import-success）仍保留，作为全部成功后的最终结果提示。
 
+## 功能契约
+
+机器可读契约：`featurePageId` 是稳定锚点，设计说明书登记的页面 ID 必须与本契约及下文一致；`requiredAsciiTokens` 是线框结构签名（结构必须保留，业务文案允许调整）；`modes` 声明基础流程与在线编辑扩展两种模式及切换条件；`forbiddenStructures` 为结构化禁止项，不依赖文本表述；除 `constraints.tunable` 列出的项外，节点结构、容器形态、必含组件均不可调整。
+
+```json
+{
+  "feature": "import",
+  "modes": {
+    "default": "基础流程（默认）：阶段3为结果提示，import-result 按导入结果分流到 variants 三变体",
+    "onlineEdit": {
+      "trigger": "仅当业务需求明确要求错误数据支持在线修正时启用",
+      "effect": "import-partial-result 与 import-failed 由 import-error-list 替代；import-success 保留为全部成功后的终态提示"
+    }
+  },
+  "nodes": [
+    {
+      "featurePageId": "import-config",
+      "containerType": "modal",
+      "order": 1,
+      "wireframeRef": "references/04-feature/import.md#import-config-wireframe",
+      "requiredAsciiTokens": ["下载模板", "上传模板", "导入规则", "[下载模板]", "[上传模板]"],
+      "requiredComponents": ["IxTimeline", "IxUpload"]
+    },
+    {
+      "featurePageId": "import-progress",
+      "containerType": "modal",
+      "order": 2,
+      "wireframeRef": "references/04-feature/import.md#import-progress-wireframe",
+      "requiredAsciiTokens": ["正在导入", "文件名", "进度", "%"],
+      "requiredComponents": ["IxProgress"]
+    },
+    {
+      "featurePageId": "import-result",
+      "containerType": "modal",
+      "order": 3,
+      "wireframeRef": "references/04-feature/import.md#import-result-wireframe",
+      "requiredAsciiTokens": ["下载冲突报告", "重新导入|关闭"],
+      "variants": ["import-success", "import-partial-result", "import-failed"]
+    },
+    {
+      "featurePageId": "import-error-list",
+      "mode": "onlineEdit",
+      "containerType": "modal",
+      "order": 3,
+      "wireframeRef": "references/04-feature/import.md#import-error-list-wireframe",
+      "requiredAsciiTokens": ["导入完毕", "错误列表", "[下载错误报告]", "[提交]", "[取消]"],
+      "requiredComponents": ["IxProTable", "IxInput", "IxSelect"],
+      "replaces": ["import-partial-result", "import-failed"],
+      "loop": "提交修正后仍有失败记录时留在本弹窗刷新剩余错误记录，循环直到全部成功"
+    }
+  ],
+  "edges": [
+    { "from": "import-config", "to": "import-progress" },
+    { "from": "import-progress", "to": "import-result", "when": "mode:default OR (mode:onlineEdit AND allSuccess)" },
+    { "from": "import-progress", "to": "import-error-list", "when": "mode:onlineEdit AND hasFailedRecords" },
+    { "from": "import-error-list", "to": "import-error-list", "label": "提交修正", "when": "仍有失败记录" },
+    { "from": "import-error-list", "to": "import-result", "label": "全部成功", "variant": "import-success", "when": "修正后无失败记录" },
+    {
+      "from": "import-result",
+      "to": "import-config",
+      "label": "重新导入",
+      "when": "variants:import-partial-result|import-failed"
+    }
+  ],
+  "constraints": {
+    "distinctContainers": true,
+    "noMerge": true,
+    "noSkip": true,
+    "order": true,
+    "pureResultModal": "mode:default 下结果弹窗为纯结果提示形态，不提供弹窗内编辑",
+    "tunable": ["upload.formats", "upload.maxSize"]
+  },
+  "forbiddenStructures": [
+    { "type": "mergeContainers", "featurePageIds": ["import-progress", "import-result"] },
+    { "type": "skipNode", "featurePageId": "import-progress" },
+    { "type": "omitNode", "featurePageId": "import-result" },
+    { "type": "embedEditingInResultModal" },
+    { "type": "enableModeWithoutTrigger", "mode": "onlineEdit" }
+  ]
+}
+```
+
+`upload.formats`（默认 `.xls`/`.xlsx`）与 `upload.maxSize`（默认 1MB）可按业务调整；调整时同步修改配置弹窗文案与校验提示，弹窗结构与组件不变。
+
 ## 页面结构
 
 - 页面类型：表单弹窗
 - 页面类型 ID：`form-modal-stepper`
+
+#### 页面结构：import-config {#import-config-wireframe}
 
 ```text
 ┌──────────────────────────────────────────────────────────┐
@@ -95,6 +181,24 @@
 - 上传：上传模板按钮使用 `IxUpload`（点击后弹出文件选择框）；已上传文件列表使用 `IxUploadFiles` 展示，包含文件图标、文件名、上传进度与移除入口。
 - 表单：阶段内容使用 `IxProForm`。
 - 弹窗内组合：时间轴、上传、表单片段与底部按钮在 `IxModal` 内容区内组合；底部操作按钮使用 `IxButton`，确定为主按钮、取消为次按钮。
+
+#### 页面结构：import-progress {#import-progress-wireframe}
+
+- 容器：独立弹窗（modal），导入期间背景配置弹窗不可操作。
+
+```text
+┌──────────────────────────────────┐
+│ 正在导入                      ×  │
+├──────────────────────────────────┤
+│                                  │
+│  ▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░  50%       │
+│                                  │
+│        文件名.xlsx               │
+│                                  │
+└──────────────────────────────────┘
+```
+
+- 组件：进度条使用 `IxProgress`；容器使用 `IxModal`。
 
 ## 页面设计要点
 
@@ -151,7 +255,9 @@
   - 文件格式校验失败或文件解析失败，全部记录未导入时，进入 `import-failed`。
 - 可选扩展：仅当业务需求特别强调错误信息支持在线编辑时，`import-partial-result` 与 `import-failed` 替换为 `import-error-list`，进入“可选扩展：错误信息在线编辑后提交”所述形态。
 
-## 导入结果提示（主流程）
+## 导入结果提示（主流程）{#import-result-wireframe}
+
+本锚点覆盖以下三种结果变体的线框图。
 
 主流程包含以下三种结果状态，默认均为纯结果提示形态，不提供弹窗内编辑；仅当业务需求特别强调错误信息支持在线编辑时，部分失败与全部失败替换为“可选扩展：错误信息在线编辑后提交”所述形态。
 
@@ -257,7 +363,7 @@
 - 本状态默认不展示成功数量；进入在线编辑扩展时，仅当失败记录可逐行展示（如字段校验类失败）时才提供在线编辑。
 - 重新导入应开启新的导入任务，不应重复写入任何已导入数据。
 
-## 可选扩展：错误信息在线编辑后提交
+## 可选扩展：错误信息在线编辑后提交{#import-error-list-wireframe}
 
 仅当业务需求特别强调错误信息支持在线编辑时启用本形态；启用后，导入结果提示中的“导入完成（部分失败）”与“导入失败（全部失败）”替换为本弹窗，主流程其余页面不变。
 
@@ -325,9 +431,9 @@
   - 点击“确定”：删除该条错误记录。
   - 点击“取消”：保留该记录。
 - 点击“提交”后，仅提交修正后保留的失败记录，不重复处理已成功或已跳过的数据。
-- 再次提交完成后，根据结果进入：
-  - `import-success`：修正后已无失败记录。
-  - `import-partial-result`：仍存在未解决失败记录。
+- 再次提交完成后，根据校验结果进入：
+  - 全部成功：本弹窗关闭，打开 `import-success` 展示导入结果。
+  - 仍存在失败记录：留在本弹窗，刷新展示剩余错误记录，继续编辑，重复本阶段直到无失败记录。
 
 ## Coding提示
 - 推荐复用组件：弹窗表单、阶段时间轴、文件上传、单选规则、进度弹窗、结果反馈、可编辑表格（仅在线编辑扩展场景使用）、表单校验、二次确认。

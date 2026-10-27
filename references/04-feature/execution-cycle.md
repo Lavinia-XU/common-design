@@ -12,11 +12,85 @@
 - 默认周期类型：每天。
 - 默认执行时间：00:00:00。
 
+## 功能契约
+
+本契约为机器可读的结构断言，供 AI 在生成或校验设计稿时逐条对照执行周期配置项的结构。
+
+- 执行周期是**1 个表单配置项**：仅 1 个 Label、1 个横向控件容器，容器内 2-3 个控件共享该 Label。字段定义表中的「周期类型」「周期补充配置」「执行时间」是同一配置项内的逻辑数据字段，**不是 3 个独立表单配置项**。
+- 除 `tunable` 列出的项外，其余结构（字段数、容器数、布局方向、必含组件、变体联动）均不可调整。
+
+```json
+{
+  "feature": "execution-cycle",
+  "formField": {
+    "count": 1,
+    "label": "执行周期"
+  },
+  "container": {
+    "type": "flexRow",
+    "count": 1,
+    "gap": 8,
+    "nowrap": true,
+    "controlHeight": 32
+  },
+  "requiredComponents": ["IxSelect", "IxTimePicker"],
+  "variants": [
+    {
+      "id": "daily",
+      "trigger": "cycleType=每天",
+      "controls": 2,
+      "requiredAsciiTokens": ["周期类型选择框", "时间选择器"],
+      "layout": "两个选择框平分容器宽度",
+      "wireframeRef": "references/04-feature/execution-cycle.md#ec-daily-wireframe"
+    },
+    {
+      "id": "weekly",
+      "trigger": "cycleType=每周",
+      "controls": 3,
+      "requiredAsciiTokens": ["周期类型选择框", "周几多选选择框", "时间选择器"],
+      "layout": "选择框1和选择框3固定最小宽度，中间多选选择框占据剩余空间",
+      "wireframeRef": "references/04-feature/execution-cycle.md#ec-weekly-wireframe"
+    },
+    {
+      "id": "monthly",
+      "trigger": "cycleType=每月",
+      "controls": 3,
+      "requiredAsciiTokens": ["周期类型选择框", "日期多选选择框", "时间选择器", "1-28", "每行展示7个数字"],
+      "layout": "选择框1和选择框3固定最小宽度，中间多选选择框占据剩余空间",
+      "wireframeRef": "references/04-feature/execution-cycle.md#ec-monthly-wireframe"
+    }
+  ],
+  "variantSwitch": {
+    "drivenBy": "周期类型选择框的值",
+    "note": "控件数量由周期类型联动决定，不由业务增减"
+  },
+  "constraints": {
+    "oneLine": true,
+    "nowrap": true,
+    "singleLabel": true,
+    "horizontalLayout": true,
+    "dayRange": { "min": 1, "max": 28, "reason": "避免不同月份天数差异导致规则不可执行" },
+    "panelGridPerRow": 7
+  },
+  "tunable": [
+    "label.text（业务可改文案，改后回显文案同步）",
+    "defaults.cycleType（默认周期类型可改）",
+    "defaults.time（默认执行时间可改）"
+  ],
+  "forbiddenStructures": [
+    { "type": "threeFields", "desc": "把执行周期拆成3个带独立Label的表单配置项" },
+    { "type": "splitLabels", "desc": "给容器内每个控件单独配Label或单独成行" },
+    { "type": "stackedLayout", "desc": "选择框纵向堆叠或换行展示" },
+    { "type": "dropDayRangeLimit", "desc": "日期面板超出1-28（如提供1-31）" }
+  ]
+}
+```
+
 ## 控件结构
 
 执行周期配置由 2-3 个选择框横向排列组成。周期类型为“每天”时展示 2 个选择框；周期类型为“每周”或“每月”时展示 3 个选择框。
 
-### 每天
+### 每天 {#ec-daily-wireframe}
 
 ```text
 ┌─────────────────┐  8px  ┌─────────────────┐
@@ -29,7 +103,7 @@
 - 宽度规则：两个选择框平分容器宽度。
 - 适用表达：每天固定时间执行。
 
-### 每周
+### 每周 {#ec-weekly-wireframe}
 
 ```text
 ┌──────────┐  8px  ┌───────────────────┐  8px  ┌─────────────────┐
@@ -42,7 +116,7 @@
 - 宽度规则：选择框1和选择框3固定最小宽度，选择框2占据剩余空间。
 - 适用表达：每周指定星期几固定时间执行。
 
-### 每月
+### 每月 {#ec-monthly-wireframe}
 
 ```text
 ┌──────────┐  8px  ┌───────────────────┐  8px  ┌─────────────────┐

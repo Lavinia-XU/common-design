@@ -1,6 +1,6 @@
 # 下拉选择面板形态与增强
 
-当选择载体已确定为下拉面板时，用本文确定面板内部形态与增强项。载体选择（平铺 Radio、平铺 CheckBox、下拉面板、卡片式选择）见 [通用表单设计方法](../02-solution-patterns/form-patterns.md) 第 6 节；组件能力与禁止做法见 [idux 组件映射表](../../05-components/idux-component-map.md)。
+当选择载体已确定为下拉面板时，用本文确定面板内部形态与增强项。载体选择（平铺 Radio、平铺 CheckBox、下拉面板、卡片式选择）见 [通用表单设计方法](../02-solution-patterns/form-patterns.md) 第 6 节；组件选型与样式变体编号见 [idux 组件映射表](../../05-components/idux-component-map.md)。
 
 ## 目录
 

@@ -41,7 +41,7 @@ metadata:
    - 控件级细节：确定使用下拉选择、标签等具体控件时，读取 `references/03-patterns/03-widget-patterns/` 下对应控件文档；可用控件清单见 `references/03-patterns/index.md`。
    - 局部能力：页面包含导入、导出、标签、优先级、执行周期、批量编辑等能力时，读取 `references/04-feature/` 下对应功能点文档。
    - 本步始终执行：命中主题时同样执行本步；主题文档只覆盖业务特有的页面形态与操作，页面骨架、控件形态、交互与状态细节以本节文档为准。
-3. 组件映射：需要把设计语义落到 idux 组件时，读取 `references/05-components/idux-component-map.md`。
+3. 组件映射：需要把设计语义落到 idux 组件及样式变体编号时，读取 `references/05-components/idux-component-map.md`；该表只负责识别应使用的组件与样式编号，Props 配置等编码规则由下游编码 Skill 承接。
 
 ## 使用示例
 
@@ -69,12 +69,12 @@ metadata:
 - 功能点设计库：见 [references/04-feature/execution-cycle.md](references/04-feature/execution-cycle.md)（何时读取：需求涉及执行周期、定时任务周期、每天每周每月联动选择或周期表单配置时）
 - 功能点设计库：见 [references/04-feature/priority-configuration.md](references/04-feature/priority-configuration.md)（何时读取：需求涉及优先级、策略位置、规则位置、移动到某条数据之前或之后时）
 - 功能点设计库：见 [references/04-feature/batch-edit.md](references/04-feature/batch-edit.md)（何时读取：需求涉及批量编辑、批量修改、勾选数据后统一赋值或批量更新字段时）
-- 组件映射表：见 [references/05-components/idux-component-map.md](references/05-components/idux-component-map.md)（何时读取：需要把页面语义映射为idux组件、按钮、弹窗、抽屉、搜索筛选或描述列表组件时）
+- 组件映射表：见 [references/05-components/idux-component-map.md](references/05-components/idux-component-map.md)（何时读取：需要把页面语义映射为idux组件、确定组件样式变体编号，或识别按钮、弹窗、抽屉、搜索筛选、描述列表等组件选型时）
 
 ## 注意事项
 
 - 本 Skill 只提供规范知识，不直接产出页面方案、HTML文件或代码。
-- 知识分层约定：场景文档（02-template、03-patterns 各主题、01-theme、04-feature）承载「该场景下的结论」；`03-patterns/02-solution-patterns/` 承载「表格、表单、详情页信息展示等设计解法的通用结论」，后续新增设计解法统一放入该目录；`03-patterns/03-widget-patterns/` 承载「控件形态与选择决策」；`05-components/idux-component-map.md` 承载「组件能力与禁忌」。同一规则的决策逻辑只写一处，其他位置保留结论并链接过去，不在两处重复描述同一决策。
+- 知识分层约定：场景文档（02-template、03-patterns 各主题、01-theme、04-feature）承载「该场景下的结论」；`03-patterns/02-solution-patterns/` 承载「表格、表单、详情页信息展示等设计解法的通用结论」，后续新增设计解法统一放入该目录；`03-patterns/03-widget-patterns/` 承载「控件形态与选择决策」；`05-components/idux-component-map.md` 承载「组件与样式变体识别」。同一规则的决策逻辑只写一处，其他位置保留结论并链接过去，不在两处重复描述同一决策。
 - 使用时应按需读取参考文件，优先读取最小相关范围。
 - 主题设计提供框架参考，不代表字段、操作和页面层级必须照搬；实际设计仍需结合业务需求和product design skill 调整。
 - 功能点设计用于补齐局部能力，放入页面方案时应简要说明设计要点，并在后续设计或编码指导中标明关联依据。

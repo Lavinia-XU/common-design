@@ -23,10 +23,71 @@
         刷新列表并清除勾选
 ```
 
+## 功能契约
+
+- 本契约为机器可读的结构断言，用于校验批量编辑设计的结构完整性；结构与组件断言均不可调整。
+- 防误读关键句：推荐页面组合表与下方线框中的"字段"是**一个配置项内的一行**（复选框 + 字段名 + 控件同行），不是多个独立配置项；可编辑字段清单由业务确定，属 `tunable`，字段增减不改变行结构。
+
+```json
+{
+  "feature": "batch-edit",
+  "nodes": [
+    {
+      "featurePageId": "batch-edit",
+      "containerType": "modal",
+      "wireframeRef": "references/04-feature/batch-edit.md#batch-edit-wireframe",
+      "requiredAsciiTokens": ["批量编辑", "已勾选", "确定", "取消"],
+      "rowSignature": {
+        "columnsPerRow": ["字段复选框", "字段名", "值控件"],
+        "sameRow": true
+      },
+      "requiredComponents": ["IxProFormModal", "IxCheckbox"]
+    }
+  ],
+  "edges": [
+    { "from": "source-list", "to": "batch-edit", "label": "批量编辑", "when": "已勾选至少一个对象，否则入口按钮禁用" },
+    { "from": "batch-edit", "to": "batch-result", "label": "确定", "variants": ["all-success", "partial-fail", "all-fail"] },
+    { "from": "batch-result", "to": "batch-edit", "label": "修正后重试", "when": "variants:all-fail，弹窗保留已填写值" }
+  ],
+  "linkage": {
+    "checkToggle": "未勾选字段的控件保持禁用，勾选后激活，允许一次勾选多个字段",
+    "noSelectionGuard": "未勾选任何字段时确定按钮禁用或提交时提示请先勾选要编辑的字段"
+  },
+  "feedback": {
+    "variants": [
+      { "id": "all-success", "required": ["成功数量提示", "关闭弹窗", "刷新列表", "清除勾选"] },
+      { "id": "partial-fail", "required": ["成功X个失败Y个提示", "失败对象与原因"] },
+      { "id": "all-fail", "required": ["失败提示", "失败对象与原因", "保留弹窗内容与已填写值以便修正重试"] }
+    ]
+  },
+  "constraints": {
+    "singleModal": true,
+    "sameRowFieldAndControl": true,
+    "selectionCountHint": "弹窗顶部展示已勾选 X 项",
+    "refreshAndClearSelection": "仅全部成功后刷新列表并清除勾选",
+    "loadingOnSubmit": true,
+    "commonFieldsOnly": "勾选对象字段集不一致时，仅展示所有对象均支持的公共字段"
+  },
+  "tunable": [
+    "editableFields（可批量编辑的字段清单由业务确定）",
+    "fieldControlMapping（字段控件按 form-patterns 常见字段组件映射速查适配）"
+  ],
+  "forbiddenStructures": [
+    { "type": "splitFieldControlColumns", "desc": "字段名与赋值控件分离为两列或两步，破坏复选框+字段名+控件的同行结构" },
+    { "type": "multiConfigSplit", "desc": "把字段清单拆成多个独立配置项（每字段一个带Label的独立表单项分组）" },
+    { "type": "noCheckLinkage", "desc": "字段复选框与控件禁用态不联动" },
+    { "type": "omitFeedbackVariants", "desc": "缺少成功/部分失败/全部失败三变体反馈" },
+    { "type": "clearSelectionOnFail", "desc": "未全部成功即清除勾选（全部失败时还须保留弹窗已填写值）" }
+  ]
+}
+```
+
 ## 页面结构
 
 - 页面类型：表单弹窗
 - 页面类型 ID：`form-modal`
+
+#### 页面结构：batch-edit {#batch-edit-wireframe}
 
 ```text
 ┌──────────────────────────────────────────────┐
